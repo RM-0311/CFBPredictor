@@ -26,3 +26,8 @@ for year in range(2015, 2023):
 
     response = betting_api.get_lines(year=year)
     lines = [*lines, *response]
+
+games = [g for g in games if g.home_division != 'fcs' and g.away_division != 'fcs' and g.home_points is not None and g.away_points is not None]
+len(games)
+
+print(games[0])
