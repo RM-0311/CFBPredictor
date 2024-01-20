@@ -20,7 +20,7 @@ betting_api = cfbd.BettingApi(api_config)
 games = []
 lines = []
 
-for year in range(2015, 2023):
+for year in range(2020, 2024):
     response = games_api.get_games(year=year)
     games = [*games, *response]
 
@@ -46,4 +46,14 @@ games = [
         away_elo = g.away_pregame_elo
     ) for g in games]
 
-print(games[0])
+for game in games:
+    game['margin'] = game['away_points'] - game['home_points']
+
+df = pd.DataFrame.from_records(games).dropna()
+df.head()
+
+excluded = ['id', 'year', 'week', 'home_team', 'away_team', 'margin', 'home_points', 'away_points']
+cat_features = ['home_conference', 'away_conference', 'neutral_site']
+cont_features = [c for c in df.columns.to_list() if c not in cat_features and c not in excluded]
+
+print(cont_features)
