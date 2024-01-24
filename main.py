@@ -52,8 +52,19 @@ for game in games:
 df = pd.DataFrame.from_records(games).dropna()
 df.head()
 
+test_df = df.query("year == 2023")
+train_df = df.query("year != 2023")
+
 excluded = ['id', 'year', 'week', 'home_team', 'away_team', 'margin', 'home_points', 'away_points']
 cat_features = ['home_conference', 'away_conference', 'neutral_site']
 cont_features = [c for c in df.columns.to_list() if c not in cat_features and c not in excluded]
 
-print(cont_features)
+splits = RandomSplitter(valid_pct=0.2)(range_of(train_df))
+
+to = TabularPandas(train_df, procs=[Categorify, Normalize],
+                   y_names="margin",
+                   cat_names = cat_features,
+                   cont_names = cont_features,
+                splits=splits)
+dls = to.dataloaders(bs=64)
+dls.show_batch()
