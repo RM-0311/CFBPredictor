@@ -67,4 +67,7 @@ to = TabularPandas(train_df, procs=[Categorify, Normalize],
                    cont_names = cont_features,
                 splits=splits)
 dls = to.dataloaders(bs=64)
-dls.show_batch()
+
+
+learn = tabular_learner(dls, metrics=mae, lr=10e-1)
+learn.fit(10)
