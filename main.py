@@ -70,4 +70,4 @@ dls = to.dataloaders(bs=64)
 
 
 learn = tabular_learner(dls, metrics=mae, lr=10e-1)
-learn.fit(7)
+print(learn.fit(6))
