@@ -80,3 +80,4 @@ pdf.head()
 
 print(pdf[['home_team', 'away_team', 'predicted', 'margin']].round(1))
 learn.export('talking_tech_neural_net')
+# TO LOAD: learn = load_learner('talking_tech_neural_net')
