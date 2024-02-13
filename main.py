@@ -69,5 +69,14 @@ to = TabularPandas(train_df, procs=[Categorify, Normalize],
 dls = to.dataloaders(bs=64)
 
 
-learn = tabular_learner(dls, metrics=mae, lr=10e-1)
-print(learn.fit(6))
+learn = tabular_learner(dls, metrics=mae, lr=10e-2)
+learn.fit(5)
+learn.show_results()
+
+pdf = test_df.copy()
+dl = learn.dls.test_dl(pdf)
+pdf['predicted'] = learn.get_preds(dl=dl)[0].numpy()
+pdf.head()
+
+print(pdf[['home_team', 'away_team', 'predicted', 'margin']].round(1))
+learn.export('talking_tech_neural_net')
